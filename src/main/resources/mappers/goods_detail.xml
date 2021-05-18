@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--mappers用于说明实体类中哪个变量与数据库中哪个字段是对应的,须在mybatis.xml中进行声明-->
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--注意此处的url指向mapper.dtd-->
+<mapper namespace="goodsDetail">
+    <select id="selectByGoodsId" parameterType="Integer"
+            resultType="com.yqm.mybatis.entity.GoodsDetail">
+        select * from t_goods_detail where goods_id = #{value}
+    </select>
+
+
+    <resultMap id="rmGoodsDetail" type="com.yqm.mybatis.entity.GoodsDetail">
+        <id column="gd_id" property="gdId"/>
+        <!--        其他的属性只要符合驼峰命名规则，就可自动对应，而不需书写result标签-->
+        <result column="goods_id" property="goodsId"/>
+        <!--        多对一时(或一对一），用association关联标签，多个details对应一个goods-->
+        <association property="goods" select="goods.selectById" column="goods_id"></association>
+        <!--                     根据主键查询sql语句返回goods，作为此处的goods-->
+    </resultMap>
+    <select id="selectManyToOne" resultMap="rmGoodsDetail">
+        select * from t_goods_detail limit 0,20
+    </select>
+
+
+</mapper>

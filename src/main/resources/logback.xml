@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--可以在logback.xml文件中对logback日志信息进行自定义-->
+<configuration>
+    <appender name = "console" class = "ch.qos.logback.core.ConsoleAppender">
+<!--ch.qos.logback.core.ConsoleAppender该类表示在控制台中输出日志信息-->
+    <encoder>
+        <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+<!--%d{HH:mm:ss.SSS}输出时间精确到毫秒,[输出的线程名称]，
+%-5level日志的级别（debug选项）按五个字符右对齐，
+%logger{36}哪一类产生的日志，最多输出36个字符，如超出则使用简写形式
+%msg日志的具体内容,%n换行-->
+    </encoder>
+    </appender>
+    <!--
+       日志输出级别(优先级高到低):
+       error: 错误 - 系统的故障日志
+       warn: 警告 - 存在风险或使用不当的日志
+       info: 一般性消息
+       debug: 程序内部用于调试信息
+       trace: 程序运行的跟踪信息
+    -->
+    <root leve="debug">
+        <appender-ref ref="console"/>
+<!--只输出debug以上的信息，在debug以上级别的根据name为console的appender设计的格式进行输出-->
+    </root>
+</configuration>
+

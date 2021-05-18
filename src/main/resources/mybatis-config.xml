@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    
+    <settings>
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+        <!--驼峰命名转换，为防止实体中的变量名与数据库不符无法读取,此处goods_id会转换为goodsId-->
+    </settings>
+    
+    
+    <plugins>
+        <plugin interceptor="com.github.pagehelper.PageInterceptor">
+            <property name="helperDialect" value="mysql"/>
+            <!--    配置分页时在使用哪一个数据库：mysql或oracle等等，
+            分页插件也可自动检测，但自定义helperDialect后自动检测不生效-->
+            <property name="reasonable" value="true"/>
+            <!--分页合理化，如果要查询≤1的页，默认首页，具体可参考pageHelper文档-->
+        </plugin>
+    </plugins>
+    <!--设置默认指向的数据库-->
+    <environments default="dev">
+        <!--配置环境，不同的环境不同的id名字-->
+        <environment id="dev">
+            <!-- 采用JDBC方式对数据库事务进行commit/rollback -->
+            <transactionManager type="JDBC"></transactionManager>
+            <!--采用c3p0方式管理数据库连接-->
+            <!--<dataSource type="POOLED">-->
+            <dataSource type="com.yqm.mybatis.datasource.C3p0DataSourceFactory">
+                <property name="driverClass" value="com.mysql.cj.jdbc.Driver"/>
+                <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/babytun?useUnicode=true&amp;characterEncoding=UTF-8"/>
+                <property name="user" value="root"/>
+                <property name="password" value="123456"/>
+                <property name="initialPoolSize" value="5"/>
+                <property name="maxPoolSize" value="20"/>
+                <property name="minPoolSize" value="5"/>
+                <!--...-->
+            </dataSource>
+        </environment>
+        <environment id="prd">
+            <!-- 采用JDBC方式对数据库事务进行commit/rollback -->
+            <transactionManager type="JDBC"></transactionManager>
+            <!--采用连接池方式管理数据库连接-->
+            <dataSource type="POOLED">
+                <property name="driverClass" value="com.mysql.cj.jdbc.Driver"/>
+                <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/babytun?useUnicode=true&amp;characterEncoding=UTF-8"/>
+                <property name="user" value="root"/>
+                <property name="password" value="123456"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <mappers>
+        <mapper resource="mappers/goods.xml"></mapper>
+        <mapper resource="mappers/goods_detail.xml"></mapper>
+<!--项目启动自动加载该mapper文件-->
+    </mappers>
+</configuration>
